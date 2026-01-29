@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>श्रीमती रजवंती देवी यादव कन्या इंटर कॉलेज, मेजा खास</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Government Girls Inter College Meja Prayagraj">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { primary: "#7b1c1c" }
+        }
+      }
+    }
+  </script>
+
+  <!-- Fonts + CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+<!-- ================= HEADER ================= -->
+<header class="bg-primary text-white p-4 sticky top-0 z-50">
+  <h1 id="schoolName" class="text-xl md:text-2xl font-bold text-center"></h1>
+  <p id="schoolAddress" class="text-sm text-center"></p>
+
+  <nav class="mt-3 flex flex-wrap justify-center gap-3 text-sm">
+    <button onclick="showPage('home')" data-i18n="home">होम</button>
+    <button onclick="showPage('staff')" data-i18n="staff">स्टाफ</button>
+    <button onclick="showPage('notices')" data-i18n="notices">सूचना</button>
+    <button onclick="showPage('gallery')" data-i18n="gallery">गैलरी</button>
+    <button onclick="showPage('downloads')" data-i18n="downloads">डाउनलोड</button>
+    <button onclick="showPage('contact')" data-i18n="contact">संपर्क</button>
+
+    <button onclick="setLang('hi')">हिंदी</button>
+    <button onclick="setLang('en')">EN</button>
+    <button onclick="toggleTheme()" id="themeBtn">🌙</button>
+  </nav>
+</header>
+
+<!-- NOTICE TICKER -->
+<section class="bg-yellow-100 p-2">
+  <marquee id="noticeTicker" class="text-sm font-semibold text-red-800"></marquee>
+</section>
+
+<!-- ================= PAGES ================= -->
+
+<!-- HOME -->
+<section id="home" class="page p-6">
+  <h2 class="section-title" data-i18n="admin">विद्यालय प्रशासन</h2>
+  <div id="heads" class="grid md:grid-cols-3 gap-6"></div>
+</section>
+
+<!-- STAFF -->
+<section id="staff" class="page hidden p-6 bg-white">
+  <h2 class="section-title" data-i18n="teachers">शिक्षक स्टाफ</h2>
+  <div id="teachers" class="grid sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
+</section>
+
+<!-- NOTICES -->
+<section id="notices" class="page hidden p-6">
+  <h2 class="section-title">सूचना पट्ट</h2>
+  <div id="noticeList" class="space-y-3"></div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="page hidden p-6 bg-white">
+  <h2 class="section-title">गैलरी</h2>
+  <div id="galleryGrid" class="grid sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+</section>
+
+<!-- DOWNLOADS -->
+<section id="downloads" class="page hidden p-6">
+  <h2 class="section-title">डाउनलोड</h2>
+  <div id="downloadList" class="space-y-3"></div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="page hidden p-6 bg-white">
+  <h2 class="section-title">संपर्क करें</h2>
+  <p id="contactInfo" class="text-center"></p>
+  <iframe class="w-full h-64 mt-4 rounded"
+    src="https://www.google.com/maps?q=Meja%20Prayagraj&output=embed"></iframe>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50"
+     onclick="closeLightbox()">
+  <img id="lightboxImg" class="max-w-[90%] max-h-[90%] rounded shadow-lg">
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-primary text-white text-center p-4 text-sm">
+  © <span id="year"></span> | श्रीमती रजवंती देवी यादव कन्या इंटर कॉलेज
+</footer>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+/************* CONFIG *************/
+const API = "https://script.google.com/macros/s/AKfycbzISOfgk8iqk2Cjk61bJs3ABfFMqHvdKyobj5A6GxfW60TR65qcgewk9JDeKHmJdgZG/exec";
+
+/************* UTIL *************/
+const el = id => document.getElementById(id);
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+  el(id).classList.remove("hidden");
+}
+
+/************* THEME *************/
+function toggleTheme(){
+  const html = document.documentElement;
+  html.classList.toggle("dark");
+  localStorage.setItem("theme", html.classList.contains("dark") ? "dark" : "light");
+  el("themeBtn").innerText = html.classList.contains("dark") ? "☀️" : "🌙";
+}
+if(localStorage.getItem("theme")==="dark") toggleTheme();
+
+/************* LANGUAGE *************/
+const LANG = {
+  hi:{home:"होम",staff:"स्टाफ",notices:"सूचना",gallery:"गैलरी",downloads:"डाउनलोड",contact:"संपर्क",admin:"विद्यालय प्रशासन",teachers:"शिक्षक स्टाफ"},
+  en:{home:"Home",staff:"Staff",notices:"Notices",gallery:"Gallery",downloads:"Downloads",contact:"Contact",admin:"School Administration",teachers:"Teaching Staff"}
+};
+function setLang(l){
+  localStorage.setItem("lang",l);
+  document.querySelectorAll("[data-i18n]").forEach(e=>{
+    e.innerText = LANG[l][e.dataset.i18n];
+  });
+}
+setLang(localStorage.getItem("lang")||"hi");
+
+/************* DATA LOAD *************/
+fetch(API+"?route=site").then(r=>r.json()).then(res=>{
+  const d = res.data.reduce((o,i)=>{o[i.KEY]=i.VALUE;return o;},{});
+  el("schoolName").innerText = d.school_name;
+  el("schoolAddress").innerText = d.address;
+  el("contactInfo").innerText = `${d.address} | ${d.phone} | ${d.email}`;
+});
+
+fetch(API+"?route=notices").then(r=>r.json()).then(res=>{
+  el("noticeTicker").innerText = res.data.map(n=>"📢 "+n.TITLE).join(" | ");
+  el("noticeList").innerHTML = res.data.map(n=>`
+    <div class="notice-card bg-white p-3 rounded shadow">
+      <b>${n.TITLE}</b>
+      <a href="${n.FILE_URL}" target="_blank" class="block text-primary text-sm">डाउनलोड</a>
+    </div>`).join("");
+});
+
+fetch(API+"?route=heads").then(r=>r.json()).then(res=>{
+  el("heads").innerHTML = res.data.map(h=>`
+    <div class="profile-card bg-white rounded shadow p-4 text-center">
+      <img src="${h.PHOTO_URL}" class="w-24 h-24 mx-auto rounded-full object-cover">
+      <h3 class="font-bold mt-2">${h.NAME}</h3>
+      <p class="text-primary text-sm">${h.DESIGNATION}</p>
+      <p class="text-xs italic mt-2">“${h.THOUGHT}”</p>
+    </div>`).join("");
+});
+
+fetch(API+"?route=teachers").then(r=>r.json()).then(res=>{
+  el("teachers").innerHTML = res.data.map(t=>`
+    <div class="teacher-card bg-gray-50 rounded shadow p-3 text-center">
+      <img src="${t.PHOTO_URL}" class="w-20 h-20 mx-auto rounded-full object-cover">
+      <h4 class="font-semibold text-sm mt-2">${t.NAME}</h4>
+      <p class="text-xs">${t.SUBJECT}</p>
+      <p class="text-[10px]">${t.QUALIFICATION}</p>
+    </div>`).join("");
+});
+
+fetch(API+"?route=gallery").then(r=>r.json()).then(res=>{
+  el("galleryGrid").innerHTML = res.data.map(g=>`
+    <img src="${g.IMAGE_URL}" class="rounded shadow cursor-pointer"
+         onclick="openLightbox('${g.IMAGE_URL}')">`).join("");
+});
+
+fetch(API+"?route=downloads").then(r=>r.json()).then(res=>{
+  el("downloadList").innerHTML = res.data.map(d=>`
+    <div class="download-row bg-white p-3 rounded shadow flex justify-between">
+      <span>${d.TITLE}</span>
+      <a href="${d.FILE_URL}" target="_blank" class="text-primary">डाउनलोड</a>
+    </div>`).join("");
+});
+
+function openLightbox(src){
+  el("lightboxImg").src = src;
+  el("lightbox").classList.remove("hidden");
+  el("lightbox").classList.add("flex");
+}
+function closeLightbox(){
+  el("lightbox").classList.add("hidden");
+  el("lightbox").classList.remove("flex");
+}
+
+el("year").innerText = new Date().getFullYear();
+</script>
+</body>
+</html>
