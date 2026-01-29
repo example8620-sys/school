@@ -1,0 +1,49 @@
+body{
+  font-family:"Noto Serif Devanagari","Mangal",serif;
+}
+
+/* Section titles */
+.section-title{
+  text-align:center;
+  font-size:1.25rem;
+  font-weight:700;
+  color:#7b1c1c;
+  margin-bottom:1rem;
+}
+
+/* Cards */
+.profile-card{
+  border-top:4px solid #7b1c1c;
+  transition:.3s;
+}
+.profile-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 10px 20px rgba(0,0,0,.15);
+}
+
+.teacher-card img{
+  border:2px solid #7b1c1c;
+}
+.teacher-card:hover{
+  transform:scale(1.03);
+}
+
+.notice-card{
+  border-left:5px solid #7b1c1c;
+}
+.download-row:hover{
+  background:#fdf2f2;
+}
+
+/* Dark mode */
+.dark body{
+  background:#111827;
+  color:#f9fafb;
+}
+.dark .profile-card,
+.dark .teacher-card,
+.dark .notice-card,
+.dark .download-row{
+  background:#1f2937 !important;
+  color:#f9fafb;
+}
